@@ -62,6 +62,7 @@ CREATE TABLE `articulos` (
   `precio_venta` int DEFAULT NULL,
   `precio_costo` int DEFAULT NULL,
   `id_categoria` bigint unsigned DEFAULT NULL,
+  `es_compuesto` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_articulo`),
   UNIQUE KEY `id_articulo` (`id_articulo`),
   KEY `fk_articulos_categoria` (`id_categoria`),
@@ -76,6 +77,35 @@ CREATE TABLE `articulos` (
 LOCK TABLES `articulos` WRITE;
 /*!40000 ALTER TABLE `articulos` DISABLE KEYS */;
 /*!40000 ALTER TABLE `articulos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `articulos_componentes`
+--
+
+DROP TABLE IF EXISTS `articulos_componentes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `articulos_componentes` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `articulo_padre_id` bigint unsigned NOT NULL,
+  `articulo_componente_id` bigint unsigned NOT NULL,
+  `cantidad_requerida` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `articulo_padre_id` (`articulo_padre_id`),
+  KEY `articulo_componente_id` (`articulo_componente_id`),
+  CONSTRAINT `articulos_componentes_ibfk_1` FOREIGN KEY (`articulo_padre_id`) REFERENCES `articulos` (`id_articulo`) ON DELETE CASCADE,
+  CONSTRAINT `articulos_componentes_ibfk_2` FOREIGN KEY (`articulo_componente_id`) REFERENCES `articulos` (`id_articulo`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `articulos_componentes`
+--
+
+LOCK TABLES `articulos_componentes` WRITE;
+/*!40000 ALTER TABLE `articulos_componentes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `articulos_componentes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -915,4 +945,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-03 15:45:33
+-- Dump completed on 2025-08-22 19:54:26
